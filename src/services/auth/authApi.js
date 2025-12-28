@@ -4,7 +4,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 export const authApi = createApi({
   reducerPath: "authentication",
   baseQuery,
-  tagTypes: ["User", "UserColumns"],
+  tagTypes: ["User", "UserColumns", "Columns"],
   endpoints: (builder) => ({
     // lấy user's data
     getUserInfo: builder.query({
@@ -14,20 +14,29 @@ export const authApi = createApi({
       }),
       providesTag: ["User"],
     }),
+    
+    // lấy feed columns
+    getFeedColumns: builder.query({
+      query: () => ({
+        url: "/api/auth/columns",
+        method: "GET",
+      }),
+      providesTag: ["Columns"],
+    }),
 
     // đăng nhập
     login: builder.mutation({
       query: (credentials) => ({
-        url: "auth/login",
+        url: "/api/auth/login",
         method: "POST",
         body: credentials,
       }),
     }),
 
-    // đăng nhập
+    // đăng ký
     register: builder.mutation({
       query: (credentials) => ({
-        url: "auth/register",
+        url: "/api/auth/register",
         method: "POST",
         body: credentials,
       }),
@@ -35,4 +44,5 @@ export const authApi = createApi({
   }),
 });
 
-export const { useGetUserInfoQuery, useLoginMutation, useRegisterMutation } = authApi;
+export const { useGetUserInfoQuery, useGetFeedColumnsQuery, useLoginMutation, useRegisterMutation } =
+  authApi;

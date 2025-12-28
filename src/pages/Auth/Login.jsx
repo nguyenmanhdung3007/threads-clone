@@ -1,7 +1,7 @@
 import { useGetUserInfoQuery, useLoginMutation } from "@/services/auth/authApi";
 import { useDispatch } from "react-redux";
 
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router";
 import { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
@@ -10,6 +10,8 @@ import loginSchema from "@/schemas/loginSchema";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { setAuth } from "@/features/auth/authSlice";
 
 function Login() {
   const navigate = useNavigate();
@@ -33,14 +35,15 @@ function Login() {
   // nếu đăng nhập thì quay trở lại home
   useEffect(() => {
     if (isSuccess) {
-      navigate("/");
+      return <Navigate to={continueUrl} replace />;
     }
   }, [isSuccess, navigate]);
 
   // Xử lý đăng nhập thành công
   useEffect(() => {
+    console.log(response);
     if (response.isSuccess) {
-      const { access_token, refresh_token } = response.data;
+      const { access_token, refresh_token } = response.data.data;
       localStorage.setItem("accessToken", access_token);
       localStorage.setItem("refreshToken", refresh_token);
       navigate("/");
@@ -50,9 +53,12 @@ function Login() {
   const loginHandler = async (credential) => {
     try {
       await loginFunc(credential).unwrap();
+
+      // cập nhật Reducer auth
+      dispatch(setAuth(true));
     } catch (error) {
-      console.log(error?.response?.data);
-      const serverErrors = error?.response?.data?.message;
+      console.log(error?.data);
+      const serverErrors = error?.data?.message;
       // nếu có lỗi và lỗi trả về là 1 object
       if (serverErrors && typeof serverErrors === "object") {
         Object.entries(serverErrors).forEach(([field, message]) => {
@@ -80,24 +86,23 @@ function Login() {
         </h1>
         <form
           action=""
-          className="w-sm grid grid-cols-1 gap-2"
+          className="w-[370px] grid grid-cols-1 gap-2"
           onSubmit={handleSubmit(loginHandler)}
         >
           {/* email */}
           <div className="">
             <Input
-              type="email"
-              id="email"
-              className={
-                errors.email
-                  ? "border-red-500"
-                  : "p-4 bg-background-tertiary h-12 placeholder:text-neutral-400"
-              }
+              type="login"
+              id="login"
+              className={cn(
+                "p-4 bg-background-tertiary h-13.5 border-transparent focus-visible:ring-0 rounded-xl",
+                errors.login && "border-red-500"
+              )}
               placeholder="Email"
-              {...register("email")}
+              {...register("login")}
             />
-            {errors.email && (
-              <p className="text-red-500 mt-1">{errors.email.message}</p>
+            {errors.login && (
+              <p className="text-red-500 mt-1">{errors.login.message}</p>
             )}
           </div>
 
@@ -107,7 +112,10 @@ function Login() {
             <Input
               type="password"
               id="password"
-              className={errors.password ? "border-red-500" : "block p-4"}
+              className={cn(
+                "p-4 bg-background-tertiary font-normal h-13.5 border-transparent focus-visible:ring-0 rounded-xl",
+                errors.password && "border-red-500"
+              )}
               placeholder="Password"
               {...register("password")}
             />
@@ -120,9 +128,17 @@ function Login() {
           </div>
 
           {/* submit btn */}
-          <Button className="mt-10" disabled={response.isLoading} type="submit">
+          <Button
+            className="mt-5 h-13.5 rounded-xl"
+            disabled={response.isLoading}
+            type="submit"
+          >
             {response.isLoading ? "Logging in" : "Log in"}
           </Button>
+
+          <span className="text-center text-text-secondary">
+            <Link>Forgot password?</Link>
+          </span>
 
           <p className="mt-4 text-center text-sm">
             Don't have an account?{" "}
@@ -131,6 +147,12 @@ function Login() {
             </Link>
           </p>
         </form>
+
+        {continueUrl !== "/" && (
+          <p className="mt-4 text-xs text-gray-500 italic">
+            * Bạn sẽ được chuyển hướng về: {continueUrl} sau khi đăng nhập.
+          </p>
+        )}
       </div>
     </div>
   );

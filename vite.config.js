@@ -5,6 +5,15 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
+  // server: {
+  //   proxy: {
+  //     "/api": {
+  //       target: "https://threads.f8team.dev",
+  //       changeOrigin: true,
+  //       secure: true,
+  //     },
+  //   },
+  // },
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

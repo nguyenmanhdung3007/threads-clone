@@ -17,6 +17,7 @@ const baseQuery = async (args) => {
     if (args.params) config.params = args.params;
   }
 
+  console.log(config);
   try {
     const response = await httpRequest(config);
     console.log(response);
