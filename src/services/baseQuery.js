@@ -20,7 +20,7 @@ const baseQuery = async (args) => {
   console.log(config);
   try {
     const response = await httpRequest(config);
-    console.log(response);
+
     return { data: response };
   } catch (error) {
     console.log("Có lỗi xảy ra: ", error);

@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import { NavMobileFooter, NavSideBar } from "@/components/Navigation";
+import { FeedNav, NavMobileFooter, NavSideBar } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import HomePage from "@/pages/Home";
 import { Plus } from "lucide-react";
@@ -44,8 +44,7 @@ function DefaultLayout() {
       <div className="fixed right-6 bottom-4 hidden min-[700px]:block">
         <Button
           variant="outline"
-          className="h-17 w-20.5 cursor-pointer rounded-2xl hover:scale-110"
-        >
+          className="h-17 w-20.5 cursor-pointer rounded-2xl hover:scale-110">
           <Plus className="size- stroke-3" />
         </Button>
       </div>

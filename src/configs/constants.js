@@ -47,7 +47,23 @@ export const ROUTES = {
   SEARCH: "/search",
   ACTIVITY: "/activity",
   FOLLOWING: "/following",
-  GHOST: "/ghost",
+  GHOST: "/ghost_posts",
   SETTINGS: "/settings",
+  LIKED: "/liked",
+  SAVED: "/saved",
+  NOTFOUND: "*",
+};
+
+export const PAGE_TITLE = {
+  HOME: "Home",
+  PROFILE: "Profile",
+  POST_DETAIL: "Thread",
+  SEARCH: "Search",
+  ACTIVITY: "Activity",
+  FOLLOWING: "Following",
+  GHOST: "Ghost Posts",
+  SETTINGS: "Settings",
+  LIKED: "Liked",
+  SAVED: "Saved",
   NOTFOUND: "*",
 };

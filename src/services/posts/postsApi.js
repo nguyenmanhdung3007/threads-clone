@@ -13,10 +13,10 @@ export const postsApi = createApi({
         method: "GET",
         params, // type, page, per_page
       }),
-      providesTags: (result) =>
-        result
-          ? [...result.data.map(({ id }) => ({ type: "Feed", id })), "Feed"]
-          : ["Feed"],
+      // providesTags: (result) =>
+      //   result
+      //     ? [...result.data.map(({ id }) => ({ type: "Feed", id })), "Feed"]
+      //     : ["Feed"],
     }),
 
     // GET POST DETAIL
